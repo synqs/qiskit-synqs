@@ -1,26 +1,46 @@
-from setuptools import setup
+import os
+import sys
+import setuptools
+import inspect
 
-pennylane_devices_list = [
-    "synqs.sqs = pennylane_ls:SingleQuditDevice",
-    "synqs.mqs = pennylane_ls:MultiQuditDevice",
-    "synqs.fs = pennylane_ls:FermionDevice",
-]
+long_description = """Qiskit synqs is for synqs devices."""
 
-setup(
-    name="pennylane-ls",
-    version="0.3.0",
-    description="A Pennylane plugin for cold atom quantum simulators",
-    url="https://www.github.com/synqs/pennylane-ls",
-    author="Fred Jendrzejewski",
-    author_email="fnj@kip.uni-heidelberg.de",
-    license="BSD-2",
-    packages=["pennylane_ls"],
-    zip_safe=False,
-    install_requires=[
-        "pennylane >= 0.16",
-        "numpy",
+with open("requirements.txt") as f:
+    REQUIREMENTS = f.read().splitlines()
+
+VERSION_PATH = os.path.join(os.path.dirname(__file__), "qiskit_synqs", "VERSION.txt")
+with open(VERSION_PATH, "r") as version_file:
+    VERSION = version_file.read().strip()
+
+setuptools.setup(
+    name="qiskit-synqs",
+    version=VERSION,
+    description="Integration of cold atomic experiments into the Qiskit SDK.",
+    long_description=long_description,
+    long_description_content_type="text/markdown",
+    url="https://github.com/synqs/qiskit-synqs",
+    author="Synqs",
+    author_email="darth_vader@synqs.org",
+    license="Apache 2.0",
+    classifiers=[
+        "Environment :: Console",
+        "License :: OSI Approved :: Apache Software License",
+        "Intended Audience :: Developers",
+        "Intended Audience :: Science/Research",
+        "Operating System :: Microsoft :: Windows",
+        "Operating System :: MacOS",
+        "Operating System :: POSIX :: Linux",
+        "Programming Language :: Python :: 3 :: Only",
+        "Programming Language :: Python :: 3.8",
+        "Programming Language :: Python :: 3.9",
+        "Topic :: Scientific/Engineering",
     ],
-    entry_points={
-        "pennylane.plugins": pennylane_devices_list
-    },  # for registering the pennylane device(s)
+    keywords="qiskit sdk quantum cold atoms",
+    packages=setuptools.find_packages(
+        include=["qiskit_synqs", "qiskit_synqs.*"]
+    ),
+    install_requires=REQUIREMENTS,
+    include_package_data=True,
+    python_requires=">=3.6",
+    zip_safe=False,
 )
